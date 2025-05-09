@@ -1,3 +1,5 @@
+package com.tttgames.xoxgame;
+
 import java.util.*;
 public class AIPlayer extends Player
 {
@@ -13,7 +15,7 @@ public class AIPlayer extends Player
 
     public AIPlayer(String name, char symbol, Difficulty difficulty)
     {
-        super();
+        super("test", 't');
         this.difficulty = difficulty;
         this.random = new Random();
     }

@@ -1,3 +1,5 @@
+package com.tttgames.xoxgame;
+
 public abstract class Player {
     private String name;
     private int wins;
