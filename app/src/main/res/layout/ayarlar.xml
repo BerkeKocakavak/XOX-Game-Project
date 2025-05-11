@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".SettingsActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ayarlar"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ses Ayarları"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
+
+    <Switch
+        android:id="@+id/soundSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ses Aç/Kapa"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp" />
+
+    <SeekBar
+        android:id="@+id/volumeSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="100"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tema Seçimi"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
+
+    <RadioGroup
+        android:id="@+id/themeRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/themeDefault"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Varsayılan Tema (X/O)"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/themeCircle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tema Çember"
+            android:textSize="16sp" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/saveSettingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kaydet"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>
