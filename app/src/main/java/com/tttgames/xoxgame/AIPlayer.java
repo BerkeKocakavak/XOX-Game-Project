@@ -1,7 +1,10 @@
 package com.tttgames.xoxgame;
 
-import java.util.*;
-public class AIPlayer extends Player {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+class AIPlayer extends Player {
 
     public enum Difficulty {
         EASY,
@@ -14,7 +17,7 @@ public class AIPlayer extends Player {
     private char opponentSymbol;
 
     public AIPlayer(String name, char symbol, Difficulty difficulty) {
-        super("test", 'X');
+        super(name, symbol); // Doğru super çağrısı
         this.difficulty = difficulty;
         this.random = new Random();
         this.opponentSymbol = (symbol == 'X') ? 'O' : 'X';
@@ -58,7 +61,7 @@ public class AIPlayer extends Player {
 
     private boolean isMovesLeft(char[][] board) {
         for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 3; ++j) {
+            for (int j = 0; j < 3; j++) {
                 if (board[i][j] == '\0')
                     return true;
             }
@@ -67,30 +70,25 @@ public class AIPlayer extends Player {
     }
 
     private void makeRandomMove(char[][] board) {
-        while (true) {
-            int availableMoveCount = availableMoves(board).size();
-            int rand = random.nextInt() % availableMoveCount;
-
-            if (board[(int) (rand / 3)][rand % 3] != '\0') {
-                board[(int) (rand / 3)][rand % 3] = 'O';
-                return;
-            }
+        List<int[]> availableMovesList = availableMoves(board); // availableMoves metodunu çağırın
+        int availableMoveCount = availableMovesList.size();
+        if (availableMoveCount > 0) {
+            int rand = random.nextInt(availableMoveCount);
+            int[] move = availableMovesList.get(rand);
+            board[move[0]][move[1]] = getSymbol();
         }
     }
 
-    private void makeMinimaxMove(char[][] board)
-    {
+    private void makeMinimaxMove(char[][] board) {
         int[] bestMove = findBestMove(board);
         if (bestMove[0] != -1) {
             board[bestMove[0]][bestMove[1]] = getSymbol();
-           // System.out.println(getName() + " (" + getSymbol() + ") Minimax ile şuraya oynadı: [" + bestMove[0] + "," + bestMove[1] + "]");
         } else {
             makeRandomMove(board);
         }
     }
 
-    private int[] findBestMove(char[][] board)
-    {
+    private int[] findBestMove(char[][] board) {
         int bestVal = Integer.MIN_VALUE;
         int[] bestMove = new int[]{-1, -1};
 
@@ -112,9 +110,8 @@ public class AIPlayer extends Player {
         return bestMove;
     }
 
-    private int evaluateBoard (char[][] board)
-    {
-        //Sstır kontrol
+    private int evaluateBoard(char[][] board) {
+        // Satır kontrol
         for (int row = 0; row < 3; ++row) {
             if (board[row][0] == board[row][1] && board[row][1] == board[row][2]) {
                 if (board[row][0] == getSymbol()) return 10;
@@ -122,7 +119,7 @@ public class AIPlayer extends Player {
             }
         }
 
-        //Sütun kontrol
+        // Sütun kontrol
         for (int col = 0; col < 3; ++col) {
             if (board[0][col] == board[1][col] && board[1][col] == board[2][col]) {
                 if (board[0][col] == getSymbol()) return 10;
@@ -130,10 +127,14 @@ public class AIPlayer extends Player {
             }
         }
 
-        //Çapraz kontrol
+        // Çapraz kontrol
         if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
             if (board[0][0] == getSymbol()) return 10;
             else if (board[0][0] == opponentSymbol) return -10;
+        }
+        if (board[0][2] == board[1][1] && board[1][1] == board[2][0]) {
+            if (board[0][2] == getSymbol()) return 10;
+            else if (board[0][2] == opponentSymbol) return -10;
         }
 
         return 0;
@@ -146,15 +147,11 @@ public class AIPlayer extends Player {
         if (score == -10) return score + depth;
         if (!isMovesLeft(board)) return 0;
 
-        if (isMaximizingPlayer)
-        {
+        if (isMaximizingPlayer) {
             int best = Integer.MIN_VALUE;
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    if (board[i][j] == '\0' || board[i][j] == ' ')
-                    {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (board[i][j] == '\0' || board[i][j] == ' ') {
                         board[i][j] = getSymbol();
                         best = Math.max(best, minimax(board, depth + 1, false));
                         board[i][j] = '\0'; // Geri al
@@ -162,16 +159,11 @@ public class AIPlayer extends Player {
                 }
             }
             return best;
-        }
-        else
-        {
+        } else {
             int best = Integer.MAX_VALUE;
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    if (board[i][j] == '\0' || board[i][j] == ' ')
-                    {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (board[i][j] == '\0' || board[i][j] == ' ') {
                         board[i][j] = opponentSymbol;
                         best = Math.min(best, minimax(board, depth + 1, true));
                         board[i][j] = '\0'; // Geri al

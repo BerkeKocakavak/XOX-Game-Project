@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:padding="16dp"
-    android:gravity="center" tools:context=".GameModeSelectionActivity">
+    android:gravity="center" tools:context=".YeniOyunEkraniActivity">
 
     <LinearLayout
         android:layout_width="0dp"

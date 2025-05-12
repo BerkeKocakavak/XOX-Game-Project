@@ -1,9 +1,15 @@
 <resources>
     <style name="Theme.Xoxgame" parent="Theme.AppCompat.NoActionBar">
-        <!-- Tema renkleri, dilersen özelleştirebilirsin -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/teal_200</item>
-
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:windowBackground">@drawable/main_background</item>
     </style>
+
+    <style name="ButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/buttonTextColor</item>
+        <item name="android:background">@drawable/main_background</item>
+        <item name="android:textSize">20sp</item>  <item name="android:padding">12dp</item>    </style>
+
 </resources>

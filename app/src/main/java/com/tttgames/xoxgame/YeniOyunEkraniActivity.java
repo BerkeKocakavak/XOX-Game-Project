@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.content.Intent;
+import android.util.Log;
 
 public class YeniOyunEkraniActivity extends AppCompatActivity {
 

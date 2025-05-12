@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".SettingsActivity">
+    tools:context=".Ayarlar">
 
     <TextView
         android:layout_width="match_parent"
@@ -56,20 +56,21 @@
             android:text="Varsayılan Tema (X/O)"
             android:textSize="16sp" />
 
-        <RadioButton
-            android:id="@+id/themeCircle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tema Çember"
-            android:textSize="16sp" />
     </RadioGroup>
+
+    <RadioButton
+        android:id="@+id/themeCircle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tema Çember"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/saveSettingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Kaydet"
         android:layout_gravity="end"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:text="Kaydet" />
 
 </LinearLayout>
