@@ -17,10 +17,11 @@ class AIPlayer extends Player {
     private char opponentSymbol;
 
     public AIPlayer(String name, char symbol, Difficulty difficulty) {
-        super(name, symbol); // Doğru super çağrısı
+        // AI sembolü her zaman O olsun
+        super(name, 'O');
         this.difficulty = difficulty;
         this.random = new Random();
-        this.opponentSymbol = (symbol == 'X') ? 'O' : 'X';
+        this.opponentSymbol = 'X';
     }
 
     public Difficulty getDifficulty() {
@@ -36,7 +37,6 @@ class AIPlayer extends Player {
             case HARD:
                 makeMinimaxMove(board);
                 break;
-            case MEDIUM:
             default:
                 if (Math.random() < 0.5) {
                     makeRandomMove(board);
