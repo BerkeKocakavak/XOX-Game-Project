@@ -58,7 +58,6 @@ public class OyunEkrani extends AppCompatActivity {
                     buttons[i][j].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            // mainHandler'da çalıştır
                             mainHandler.post(() -> {
                                 try {
                                     if (gameResetPending) {
@@ -86,23 +85,15 @@ public class OyunEkrani extends AppCompatActivity {
         player1Name = getIntent().getStringExtra("PLAYER1_NAME");
         player2Name = getIntent().getStringExtra("PLAYER2_NAME");
 
-        // Varsayılan oyuncu adlarını ayarla
-        if (player1Name == null) {
-            player1Name = "Oyuncu 1";
-            Log.w(TAG, "Oyuncu 1 adı null, varsayılan kullanılıyor: " + player1Name);
-        }
-        if (player2Name == null) {
-            player2Name = (gameMode == 4) ? "Oyuncu 2" : "Yapay Zeka";
-            Log.w(TAG, "Oyuncu 2 adı null, varsayılan kullanılıyor: " + player2Name);
-        }
+        // Varsayılan adlar
+        if (player1Name == null) player1Name = "Oyuncu 1";
+        if (player2Name == null) player2Name = (gameMode == 4) ? "Oyuncu 2" : "Yapay Zeka";
 
-        // Ekranı ve tahtayı ayarla
         setupGameScreen();
         initializeBoard();
     }
 
     private void initializeBoard() {
-        // Tahtayı başlat
         char[][] initialBoard = {
                 {'\0', '\0', '\0'},
                 {'\0', '\0', '\0'},
@@ -112,11 +103,11 @@ public class OyunEkrani extends AppCompatActivity {
         gameOver = false;
         currentPlayer = 1;
         updateTurnLabel();
-        // Butonları sıfırla
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (buttons[i][j] != null) {
                     buttons[i][j].setText("");
+                    buttons[i][j].setBackgroundResource(0); // Arka planı temizle
                     buttons[i][j].setEnabled(true);
                 }
             }
@@ -125,46 +116,30 @@ public class OyunEkrani extends AppCompatActivity {
     }
 
     private void setupGameScreen() {
-        // Oyuncu adlarını ayarla
-        if (tvPlayer1Name != null) {
-            tvPlayer1Name.setText("Oyuncu 1: " + player1Name);
-        }
-        if (tvPlayer2Name != null) {
-            tvPlayer2Name.setText("Oyuncu 2: " + player2Name);
-        }
+        tvPlayer1Name.setText("Oyuncu 1: " + player1Name);
+        tvPlayer2Name.setText("Oyuncu 2: " + player2Name);
         updateTurnLabel();
     }
 
     private void onCellClicked(int row, int col) {
-        if (gameOver) {
-            return; // Oyun zaten bittiyse hiçbir şey yapma
-        }
+        if (gameOver || board == null || row < 0 || row > 2 || col < 0 || col > 2) return;
+        if (board.getBoard()[row][col] != '\0') return;
 
-        if (board == null) {
-            Log.e(TAG, "Board is null in onCellClicked!");
-            return;
-        }
-        if (row < 0 || row > 2 || col < 0 || col > 2) {
-            Log.e(TAG, "Invalid row or column in onCellClicked! row = " + row + ", col = " + col);
-            return;
-        }
-
-        if (board.getBoard()[row][col] != '\0') {
-            return; // Eğer hücre doluysa ve oyun bitmemişse, hiçbir şey yapma
-        }
-
-        // Oyuncu sembolünü yerleştir
         char playerSymbol = (currentPlayer == 1) ? 'X' : 'O';
         board.getBoard()[row][col] = playerSymbol;
+
         Button clickedButton = buttons[row][col];
         if (clickedButton != null) {
-            clickedButton.setText(String.valueOf(playerSymbol));
+            if (playerSymbol == 'X') {
+                clickedButton.setBackgroundResource(R.drawable.x_image);
+            } else {
+                clickedButton.setBackgroundResource(R.drawable.o_image);
+            }
             clickedButton.setEnabled(false);
         } else {
             Log.e(TAG, "Button is null in onCellClicked! row = " + row + ", col = " + col);
         }
 
-        // Oyunun bitip bitmediğini kontrol et
         PlayerEnum result = board.evaluateBoard();
         if (result != null) {
             gameOver = true;
@@ -172,22 +147,16 @@ public class OyunEkrani extends AppCompatActivity {
             return;
         }
 
-        // Sıradaki oyuncuya geç
         switchPlayer();
+
         if (gameMode != 4) {
             computerMove();
         }
     }
 
     private void computerMove() {
-        // Oyunun bitip bitmediğini kontrol et
-        if (gameOver) return;
-        if (board == null) {
-            Log.e(TAG, "Board is null in computerMove!");
-            return;
-        }
+        if (gameOver || board == null) return;
 
-        // Rastgele bir hareket yap
         int row, col;
         do {
             row = (int) (Math.random() * 3);
@@ -197,28 +166,26 @@ public class OyunEkrani extends AppCompatActivity {
         board.getBoard()[row][col] = 'O';
         Button computerButton = buttons[row][col];
         if (computerButton != null) {
-            computerButton.setText("O");
+            computerButton.setBackgroundResource(R.drawable.o_image);
             computerButton.setEnabled(false);
         } else {
             Log.e(TAG, "Button is null in computerMove! row = " + row + ", col = " + col);
         }
 
-        // Oyunun bitip bitmediğini kontrol et
         PlayerEnum result = board.evaluateBoard();
         if (result != null) {
             gameOver = true;
             handleGameOver(result);
             return;
         }
+
         switchPlayer();
     }
 
     private void handleGameOver(PlayerEnum result) {
-        // Aktivitenin bitip bitmediğini kontrol et
         if (isFinishing()) return;
 
-        // Sonucu al
-        String message = "";
+        String message;
         switch (result) {
             case XPlayer:
                 message = player1Name + " Kazandı!";
@@ -229,49 +196,36 @@ public class OyunEkrani extends AppCompatActivity {
             case TIE:
                 message = "Berabere!";
                 break;
+            default:
+                message = "Bilinmeyen sonuç!";
+                break;
         }
 
-        // Alert dialog oluştur
-        final String finalMessage = message;
         mainHandler.post(() -> {
             new AlertDialog.Builder(OyunEkrani.this)
                     .setTitle("Oyun Bitti")
-                    .setMessage(finalMessage)
+                    .setMessage(message)
                     .setCancelable(false)
-                    .setPositiveButton("Yeni Oyun", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            resetGame();
-                        }
-                    })
+                    .setPositiveButton("Yeni Oyun", (dialog, which) -> resetGame())
                     .show();
         });
-        gameOver = true;
         gameResetPending = true;
     }
 
     private void switchPlayer() {
-        // Oyuncuyu değiştir ve etiketi güncelle
         currentPlayer = (currentPlayer == 1) ? 2 : 1;
         updateTurnLabel();
     }
 
     private void updateTurnLabel() {
-        // Sıra etiketini güncelle
         if (tvTurn != null) {
-            if (gameMode == 4) {
-                tvTurn.setText("Sıra: " + (currentPlayer == 1 ? player1Name : player2Name));
-            } else {
-                tvTurn.setText("Sıra: " + player1Name);
-            }
+            tvTurn.setText("Sıra: " + ((currentPlayer == 1 || gameMode == 4) ? player1Name : player2Name));
         }
     }
 
     private void resetGame() {
-        // Aktivitenin bitip bitmediğini kontrol et
         if (isFinishing()) return;
         try {
-            // Tahtayı ve arayüzü sıfırla
             initializeBoard();
         } catch (Exception e) {
             Log.e(TAG, "Error resetting the game", e);
@@ -280,9 +234,7 @@ public class OyunEkrani extends AppCompatActivity {
     }
 
     private void showToast(final String message) {
-        // Aktivitenin bitip bitmediğini kontrol et
         if (isFinishing()) return;
-        // Toast mesajını göster
         mainHandler.post(() -> Toast.makeText(OyunEkrani.this, message, Toast.LENGTH_LONG).show());
     }
 }
