@@ -12,16 +12,18 @@ class AIPlayer extends Player {
         HARD
     }
 
+    Board board;
     private final Difficulty difficulty;
     private Random random;
     private char opponentSymbol;
 
-    public AIPlayer(String name, char symbol, Difficulty difficulty) {
+    public AIPlayer(String name, char symbol, Difficulty difficulty, Board board) {
         // AI sembolü her zaman O olsun
         super(name, 'O');
         this.difficulty = difficulty;
         this.random = new Random();
         this.opponentSymbol = 'X';
+        this.board = board;
     }
 
     public Difficulty getDifficulty() {
@@ -29,21 +31,18 @@ class AIPlayer extends Player {
     }
 
     @Override
-    public void makeMove(char[][] board) {
+    public int[] makeMove(char[][] board) {
         switch (getDifficulty()) {
             case EASY:
-                makeRandomMove(board);
-                break;
+                return makeRandomMove(board);
             case HARD:
-                makeMinimaxMove(board);
-                break;
+                return makeMinimaxMove(board);
             default:
                 if (Math.random() < 0.5) {
-                    makeRandomMove(board);
+                    return makeRandomMove(board);
                 } else {
-                    makeMinimaxMove(board);
+                    return makeMinimaxMove(board);
                 }
-                break;
         }
     }
 
@@ -69,23 +68,22 @@ class AIPlayer extends Player {
         return false;
     }
 
-    private void makeRandomMove(char[][] board) {
+    private int[] makeRandomMove(char[][] board) {
         List<int[]> availableMovesList = availableMoves(board); // availableMoves metodunu çağırın
         int availableMoveCount = availableMovesList.size();
-        if (availableMoveCount > 0) {
-            int rand = random.nextInt(availableMoveCount);
-            int[] move = availableMovesList.get(rand);
-            board[move[0]][move[1]] = getSymbol();
-        }
+        int rand = random.nextInt(availableMoveCount);
+        int[] move = availableMovesList.get(rand);
+        return new int[]{move[0], move[1]};
     }
 
-    private void makeMinimaxMove(char[][] board) {
+    private int[] makeMinimaxMove(char[][] board) {
         int[] bestMove = findBestMove(board);
         if (bestMove[0] != -1) {
             board[bestMove[0]][bestMove[1]] = getSymbol();
         } else {
             makeRandomMove(board);
         }
+        return bestMove;
     }
 
     private int[] findBestMove(char[][] board) {

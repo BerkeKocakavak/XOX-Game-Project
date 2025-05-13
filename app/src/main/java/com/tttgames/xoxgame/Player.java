@@ -14,7 +14,7 @@ public abstract class Player {
         this.symbol = symbol;
     }
 
-    public abstract void makeMove(char[][] board);
+    public abstract int[] makeMove(char[][] board);
 
     public String getName()
     {

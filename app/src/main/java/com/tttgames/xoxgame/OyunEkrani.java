@@ -155,30 +155,43 @@ public class OyunEkrani extends AppCompatActivity {
     }
 
     private void computerMove() {
-        if (gameOver || board == null) return;
-
-        int row, col;
-        do {
-            row = (int) (Math.random() * 3);
-            col = (int) (Math.random() * 3);
-        } while (board.getBoard()[row][col] != '\0');
-
-        board.getBoard()[row][col] = 'O';
-        Button computerButton = buttons[row][col];
-        if (computerButton != null) {
-            computerButton.setBackgroundResource(R.drawable.o_image);
-            computerButton.setEnabled(false);
-        } else {
-            Log.e(TAG, "Button is null in computerMove! row = " + row + ", col = " + col);
+        // Oyunun bitip bitmediğini kontrol et
+        if (gameOver) return;
+        if (board == null) {
+            Log.e(TAG, "Board is null in computerMove!");
+            return;
         }
 
+        AIPlayer.Difficulty difficulty = null;
+        switch (gameMode){
+            case 1:
+                difficulty = AIPlayer.Difficulty.EASY;
+                break;
+            case 2:
+                difficulty = AIPlayer.Difficulty.MEDIUM;
+                break;
+            case 3:
+                difficulty = AIPlayer.Difficulty.HARD;
+                break;
+        }
+        AIPlayer ai = new AIPlayer("AI", 'O', difficulty, board);
+        int[] move = ai.makeMove(board.getBoard());
+
+        Button computerButton = buttons[move[0]][move[1]];
+        if (computerButton != null) {
+            computerButton.setText("O");
+            computerButton.setEnabled(false);
+        } else {
+            Log.e(TAG, "Button is null in computerMove! row = " + move[0] + ", col = " + move[1]);
+        }
+
+        // Oyunun bitip bitmediğini kontrol et
         PlayerEnum result = board.evaluateBoard();
         if (result != null) {
             gameOver = true;
             handleGameOver(result);
             return;
         }
-
         switchPlayer();
     }
 
