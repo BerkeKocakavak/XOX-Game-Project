@@ -26,7 +26,6 @@
 
     <Switch
         android:id="@+id/soundSwitch"
-        style="@style/color"
         android:text="Ses Aç/Kapa"
         android:textColorLink="#000000" />
 

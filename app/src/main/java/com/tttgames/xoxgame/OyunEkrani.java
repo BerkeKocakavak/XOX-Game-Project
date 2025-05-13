@@ -9,8 +9,6 @@ import android.widget.Toast;
 import android.util.Log;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.appcompat.app.AlertDialog;
-import android.content.DialogInterface;
 
 public class OyunEkrani extends AppCompatActivity {
 
@@ -27,6 +25,7 @@ public class OyunEkrani extends AppCompatActivity {
     private String player2Name;
     private Handler mainHandler = new Handler(Looper.getMainLooper());
     private boolean gameResetPending = false;
+    private Button btnReset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +36,7 @@ public class OyunEkrani extends AppCompatActivity {
         tvPlayer1Name = findViewById(R.id.tvPlayer1Name);
         tvPlayer2Name = findViewById(R.id.tvPlayer2Name);
         tvTurn = findViewById(R.id.tvTurn);
+        btnReset = findViewById(R.id.btnReset);
 
         // Butonları başlat
         buttons[0][0] = findViewById(R.id.btn00);
@@ -60,16 +60,12 @@ public class OyunEkrani extends AppCompatActivity {
                         public void onClick(View v) {
                             mainHandler.post(() -> {
                                 try {
-                                    if (gameResetPending) {
-                                        resetGame();
-                                        gameResetPending = false;
-                                    } else {
+                                    if (!gameOver) { // Oyun bitmemişse hücreye tıklanabilir
                                         onCellClicked(row, col);
                                     }
                                 } catch (Exception e) {
                                     Log.e(TAG, "Error in onClick: ", e);
                                     showToast("Bir hata oluştu: " + e.getMessage());
-                                    resetGame();
                                 }
                             });
                         }
@@ -79,6 +75,17 @@ public class OyunEkrani extends AppCompatActivity {
                 }
             }
         }
+
+        // Reset butonu tıklama olayını ayarla
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainHandler.post(() -> {
+                    resetGame();
+                    gameResetPending = false;
+                });
+            }
+        });
 
         // Oyun modunu ve oyuncu adlarını al
         gameMode = getIntent().getIntExtra("GAME_MODE", 0);
@@ -102,22 +109,30 @@ public class OyunEkrani extends AppCompatActivity {
         board = new Board(initialBoard);
         gameOver = false;
         currentPlayer = 1;
-        updateTurnLabel();
+        updateTurnLabel(); // Başlangıçta oyuncu adını göster
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (buttons[i][j] != null) {
                     buttons[i][j].setText("");
-                    buttons[i][j].setBackgroundResource(0); // Arka planı temizle
+                    buttons[i][j].setBackgroundResource(0);
                     buttons[i][j].setEnabled(true);
                 }
             }
         }
         gameResetPending = false;
+        btnReset.setVisibility(View.GONE);
     }
 
     private void setupGameScreen() {
-        tvPlayer1Name.setText("Oyuncu 1: " + player1Name);
-        tvPlayer2Name.setText("Oyuncu 2: " + player2Name);
+        if (gameMode >= 1 && gameMode <= 3) {
+            tvPlayer1Name.setText("Bilgisayara Karşı");
+            tvPlayer2Name.setText("");
+            tvTurn.setVisibility(View.GONE); // Bilgisayar oyununda sırayı gizle
+        } else {
+            tvPlayer1Name.setText("Oyuncu: " + player1Name);
+            tvPlayer2Name.setText("Oyuncu: " + player2Name);
+            tvTurn.setVisibility(View.VISIBLE); // Çok oyunculu modda sırayı göster
+        }
         updateTurnLabel();
     }
 
@@ -155,7 +170,6 @@ public class OyunEkrani extends AppCompatActivity {
     }
 
     private void computerMove() {
-        // Oyunun bitip bitmediğini kontrol et
         if (gameOver) return;
         if (board == null) {
             Log.e(TAG, "Board is null in computerMove!");
@@ -163,7 +177,7 @@ public class OyunEkrani extends AppCompatActivity {
         }
 
         AIPlayer.Difficulty difficulty = null;
-        switch (gameMode){
+        switch (gameMode) {
             case 1:
                 difficulty = AIPlayer.Difficulty.EASY;
                 break;
@@ -185,7 +199,6 @@ public class OyunEkrani extends AppCompatActivity {
             Log.e(TAG, "Button is null in computerMove! row = " + move[0] + ", col = " + move[1]);
         }
 
-        // Oyunun bitip bitmediğini kontrol et
         PlayerEnum result = board.evaluateBoard();
         if (result != null) {
             gameOver = true;
@@ -202,6 +215,9 @@ public class OyunEkrani extends AppCompatActivity {
         switch (result) {
             case XPlayer:
                 message = player1Name + " Kazandı!";
+                if (gameMode != 4) {
+                    message = "Kazandınız!";
+                }
                 break;
             case OPlayer:
                 message = (gameMode == 4) ? player2Name + " Kazandı!" : "Yapay Zeka Kazandı!";
@@ -214,15 +230,12 @@ public class OyunEkrani extends AppCompatActivity {
                 break;
         }
 
-        mainHandler.post(() -> {
-            new AlertDialog.Builder(OyunEkrani.this)
-                    .setTitle("Oyun Bitti")
-                    .setMessage(message)
-                    .setCancelable(false)
-                    .setPositiveButton("Yeni Oyun", (dialog, which) -> resetGame())
-                    .show();
-        });
+        showToast(message);
         gameResetPending = true;
+        showResetButton();
+        if (gameMode == 4) {
+            tvTurn.setVisibility(View.GONE); // Oyun bittiğinde çok oyunculu modda sırayı gizle
+        }
     }
 
     private void switchPlayer() {
@@ -232,7 +245,11 @@ public class OyunEkrani extends AppCompatActivity {
 
     private void updateTurnLabel() {
         if (tvTurn != null) {
-            tvTurn.setText("Sıra: " + ((currentPlayer == 1 || gameMode == 4) ? player1Name : player2Name));
+            if (gameMode >= 1 && gameMode <= 3) {
+                tvTurn.setText("");
+            } else {
+                tvTurn.setText("Sıra: " + ((currentPlayer == 1) ? player1Name : player2Name));
+            }
         }
     }
 
@@ -240,6 +257,9 @@ public class OyunEkrani extends AppCompatActivity {
         if (isFinishing()) return;
         try {
             initializeBoard();
+            if (gameMode == 4) {
+                tvTurn.setVisibility(View.VISIBLE); // Oyunu yeniden başlattığında çok oyunculu modda sırayı göster
+            }
         } catch (Exception e) {
             Log.e(TAG, "Error resetting the game", e);
             showToast("Oyun sıfırlanırken bir hata oluştu: " + e.getMessage());
@@ -249,5 +269,11 @@ public class OyunEkrani extends AppCompatActivity {
     private void showToast(final String message) {
         if (isFinishing()) return;
         mainHandler.post(() -> Toast.makeText(OyunEkrani.this, message, Toast.LENGTH_LONG).show());
+    }
+
+    private void showResetButton() {
+        if (btnReset != null) {
+            btnReset.setVisibility(View.VISIBLE);
+        }
     }
 }

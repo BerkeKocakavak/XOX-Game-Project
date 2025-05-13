@@ -10,68 +10,78 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
         android:layout_weight="1"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:layout_marginRight="16dp">  <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Yapay Zekaya Karşı"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="177dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Bilgisayara Karşı"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnEasy"
-            android:layout_width="match_parent"
+            android:layout_width="98dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:background="#81C784"
             android:text="Kolay"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnMedium"
-            android:layout_width="match_parent"
+            android:layout_width="98dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:background="#FFB74D"
             android:text="Orta"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnHard"
-            android:layout_width="match_parent"
+            android:layout_width="99dp"
             android:layout_height="wrap_content"
+            android:background="#E57373"
             android:text="Zor"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="201dp"
+        android:layout_marginLeft="16dp"
         android:layout_weight="1"
-        android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_marginLeft="16dp">  <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Çok Oyunculu"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Çok Oyunculu"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/etPlayer1Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Oyuncu 1 Adı"
-            android:textSize="18sp"
             android:layout_marginBottom="8dp"
-            android:inputType="textPersonName" />
+            android:background="#BBBBBB"
+            android:hint="Oyuncu 1 Adı"
+            android:inputType="textPersonName"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/etPlayer2Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#BBBBBB"
             android:hint="Oyuncu 2 Adı"
             android:inputType="textPersonName"
             android:textSize="18sp" />
@@ -79,10 +89,11 @@
         <Button
             android:id="@+id/btnStartGame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginTop="16dp"
+            android:background="#FFFFFF"
             android:text="Oyunu Başlat"
-            android:textSize="18sp"
-            android:layout_marginTop="16dp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
 </LinearLayout>

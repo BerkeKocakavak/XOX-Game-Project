@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ana_metin_rengi">#333333</color>
+    <color name="baslik_rengi">#000000</color>
+    <color name="buton_arkaplan_rengi">#4CAF50</color>
+    <color name="buton_metin_rengi">#FFFFFF</color>
+    <color name="arkaplan_rengi">#F0F0F0</color>
+</resources>
