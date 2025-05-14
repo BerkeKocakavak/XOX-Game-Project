@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,8 +9,6 @@
     android:padding="16dp"
     android:background="@drawable/tictactoe"
     tools:context=".MainActivity">
-
-    <!-- TextView kaldırıldı -->
 
     <Button
         android:id="@+id/btnNewGame"
@@ -23,7 +21,6 @@
         android:backgroundTint="#003B73"
         android:alpha="0.9"
         android:padding="12dp"
-        app:cornerRadius="12dp"
         android:layout_marginBottom="16dp"/>
 
     <Button
@@ -37,7 +34,6 @@
         android:backgroundTint="#0074B7"
         android:alpha="0.9"
         android:padding="12dp"
-        app:cornerRadius="12dp"
         android:layout_marginBottom="16dp"/>
 
     <Button
@@ -50,7 +46,5 @@
         android:textColor="#FFFFFF"
         android:backgroundTint="#60A3D9"
         android:alpha="0.9"
-        android:padding="12dp"
-        app:cornerRadius="12dp"/>
-
+        android:padding="12dp"/>
 </LinearLayout>
