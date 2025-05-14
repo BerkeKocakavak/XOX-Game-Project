@@ -15,7 +15,11 @@
         android:layout_height="15dp"
         android:layout_marginBottom="50dp"
         android:gravity="center_horizontal"
+<<<<<<< HEAD
         android:orientation="horizontal">
+=======
+        android:layout_marginBottom="32dp">
+>>>>>>> 63a6f8ae6ad8ac433fdd7203833ec2f070b633e8
 
         <ImageView
             android:layout_width="40dp"
@@ -158,12 +162,36 @@
             android:contentDescription="Sağ alt kutu" />
     </GridLayout>
 
-    <TextView
-        android:id="@+id/tvTurn"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
         android:text="Sıra: Oyuncu 1"
         android:textSize="18sp" />
 </LinearLayout>
+=======
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/tvTurn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Sıra: Oyuncu 1"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#00FFFFFF"
+            android:text="Yeniden Başlat"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</LinearLayout>
+>>>>>>> 63a6f8ae6ad8ac433fdd7203833ec2f070b633e8

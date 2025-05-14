@@ -17,9 +17,14 @@
 
     <Switch
         android:id="@+id/soundSwitch"
+<<<<<<< HEAD
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ses Aç/Kapa" />
+=======
+        android:text="Ses Aç/Kapa"
+        android:textColorLink="#000000" />
+>>>>>>> 63a6f8ae6ad8ac433fdd7203833ec2f070b633e8
 
     <SeekBar
         android:id="@+id/volumeSeekBar"
