@@ -1,9 +1,13 @@
 package com.tttgames.xoxgame;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
@@ -26,12 +30,16 @@ public class OyunEkrani extends AppCompatActivity {
     private Handler mainHandler = new Handler(Looper.getMainLooper());
     private boolean gameResetPending = false;
     private Button btnReset;
-
+    private LinearLayout rootLayout;
+    private int xDrawableResId = R.drawable.x_image;
+    private int oDrawableResId = R.drawable.o_image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.oyunekrani);
 
+        rootLayout = findViewById(R.id.rootLayout);
+        applyThemeFromSettings(); // Tema ve ikonları uygula
         // UI öğelerini başlat
         tvPlayer1Name = findViewById(R.id.tvPlayer1Name);
         tvPlayer2Name = findViewById(R.id.tvPlayer2Name);
@@ -122,8 +130,65 @@ public class OyunEkrani extends AppCompatActivity {
         gameResetPending = false;
         btnReset.setVisibility(View.GONE);
     }
+    private void applyThemeFromSettings() {
+        SharedPreferences sharedPreferences = getSharedPreferences("game_settings", Context.MODE_PRIVATE);
+        String selectedTheme = sharedPreferences.getString("current_theme", "Varsayilan");
+        String xImagePref = sharedPreferences.getString("x_image", "x_image");
+        String oImagePref = sharedPreferences.getString("o_image", "o_image");
 
-    private void setupGameScreen() {
+        // Arka plan temasını uygula
+        if (rootLayout != null) {
+            switch (selectedTheme) {
+                case "SiyahBeyaz":
+                    rootLayout.setBackgroundResource(R.drawable.tema_siyahbeyaz);
+                    break;
+                case "KirmiziTema":
+                    rootLayout.setBackgroundResource(R.drawable.tema_kirmizipembe);
+                    break;
+                case "BrainRotTema":
+                    rootLayout.setBackgroundResource(R.drawable.tema_brainrot);
+                    break;
+                default:
+                    rootLayout.setBackgroundResource(R.drawable.tema_varsayilan);
+                    break;
+            }
+        }
+
+        // X ikonu kaynağını belirle... (Aynı kalabilir)
+        switch (xImagePref) {
+            case "x_pembe":
+                xDrawableResId = R.drawable.x_pembe;
+                break;
+            case "x_br":
+                xDrawableResId = R.drawable.x_br;
+                break;
+            case "x_gri":
+                xDrawableResId = R.drawable.x_gri;
+                break;
+            default:
+                xDrawableResId = R.drawable.x_image;
+                break;
+        }
+
+        // O ikonu kaynağını belirle... (Aynı kalabilir)
+        switch (oImagePref) {
+            case "o_pembe":
+                oDrawableResId = R.drawable.o_pembe;
+                break;
+            case "o_br":
+                oDrawableResId = R.drawable.o_br;
+                break;
+            case "o_gri":
+                oDrawableResId = R.drawable.o_gri;
+                break;
+            default:
+                oDrawableResId = R.drawable.o_image;
+                break;
+        }
+    }
+
+
+        private void setupGameScreen() {
         if (gameMode >= 1 && gameMode <= 3) {
             tvPlayer1Name.setText("Bilgisayara Karşı");
             tvPlayer2Name.setText("");
@@ -146,9 +211,9 @@ public class OyunEkrani extends AppCompatActivity {
         Button clickedButton = buttons[row][col];
         if (clickedButton != null) {
             if (playerSymbol == 'X') {
-                clickedButton.setBackgroundResource(R.drawable.x_image);
+                clickedButton.setBackgroundResource(xDrawableResId);
             } else {
-                clickedButton.setBackgroundResource(R.drawable.o_image);
+                clickedButton.setBackgroundResource(oDrawableResId);
             }
             clickedButton.setEnabled(false);
         } else {
@@ -171,10 +236,8 @@ public class OyunEkrani extends AppCompatActivity {
 
     private void computerMove() {
         if (gameOver) return;
-        if (board == null) {
-            Log.e(TAG, "Board is null in computerMove!");
-            return;
-        }
+
+
 
         AIPlayer.Difficulty difficulty = null;
         switch (gameMode) {
@@ -188,26 +251,22 @@ public class OyunEkrani extends AppCompatActivity {
                 difficulty = AIPlayer.Difficulty.HARD;
                 break;
         }
+
         AIPlayer ai = new AIPlayer("AI", 'O', difficulty, board);
         int[] move = ai.makeMove(board.getBoard());
 
-        Button computerButton = buttons[move[0]][move[1]];
-        if (computerButton != null) {
-            computerButton.setText("O");
-            computerButton.setEnabled(false);
-        } else {
-            Log.e(TAG, "Button is null in computerMove! row = " + move[0] + ", col = " + move[1]);
-        }
+        board.getBoard()[move[0]][move[1]] = 'O';
+        buttons[move[0]][move[1]].setBackgroundResource(oDrawableResId);
+        buttons[move[0]][move[1]].setEnabled(false);
 
         PlayerEnum result = board.evaluateBoard();
         if (result != null) {
             gameOver = true;
             handleGameOver(result);
-            return;
+        } else {
+            switchPlayer();
         }
-        switchPlayer();
     }
-
     private void handleGameOver(PlayerEnum result) {
         if (isFinishing()) return;
 

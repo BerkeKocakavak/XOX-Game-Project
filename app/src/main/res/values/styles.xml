@@ -1,0 +1,32 @@
+<resources>
+    <!-- Oyun butonu için stil -->
+    <style name="GameButton">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:layout_margin">4dp</item>
+    </style>
+
+    <!-- Tema: Brainrot -->
+    <style name="AppTheme_Brainrot" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@drawable/tema_brainrot</item>
+    </style>
+
+    <!-- Tema: Siyah Beyaz -->
+    <style name="AppTheme_SiyahBeyaz" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@drawable/tema_siyahbeyaz</item>
+    </style>
+
+    <!-- Tema: Kırmızı Pembe -->
+    <style name="AppTheme_KirmiziTema" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@drawable/tema_kirmizipembe</item>
+    </style>
+
+    <!-- Varsayılan Tema -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+</resources>

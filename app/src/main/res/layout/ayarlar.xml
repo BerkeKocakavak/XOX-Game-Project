@@ -1,76 +1,109 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp"
-    android:background="@drawable/arkaplan"
-    tools:context=".Ayarlar">
+    android:background="@drawable/arkaplan">
 
     <TextView
+        android:id="@+id/titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ayarlar"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ses Ayarları"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp" />
+        android:textStyle="bold" />
 
     <Switch
         android:id="@+id/soundSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Ses Aç/Kapa"
         android:textColorLink="#000000" />
 
     <SeekBar
         android:id="@+id/volumeSeekBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="100"
-        android:layout_marginBottom="16dp" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tema Seçimi"
         android:textSize="18sp"
-        android:layout_marginBottom="8dp" />
-
+        android:layout_marginTop="16dp" />
     <RadioGroup
         android:id="@+id/themeRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <RadioButton
             android:id="@+id/themeDefault"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Varsayılan Tema (X/O)"
-            android:textSize="16sp" />
-
+            android:text="Varsayılan" />
+        <RadioButton
+            android:id="@+id/themeBlackWhite"
+            android:text="Siyah-Beyaz" />
+        <RadioButton
+            android:id="@+id/themeRedPink"
+            android:text="Kırmızı-Pembe" />
+        <RadioButton
+            android:id="@+id/themeBrainRot"
+            android:text="BrainRot" />
     </RadioGroup>
 
-    <RadioButton
-        android:id="@+id/themeCircle"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tema Çember"
-        android:textSize="16sp" />
+        android:text="X İkonu Seçimi"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+    <RadioGroup
+        android:id="@+id/xImageRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/xImageDefault"
+            android:text="Varsayılan X" />
+        <RadioButton
+            android:id="@+id/xImageRedPink"
+            android:text="Pembe X" />
+        <RadioButton
+            android:id="@+id/xImageBrainRot"
+            android:text="BrainRot X" />
+        <RadioButton
+            android:id="@+id/xImageGray"
+            android:text="Gri X" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="O İkonu Seçimi"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+    <RadioGroup
+        android:id="@+id/oImageRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/oImageDefault"
+            android:text="Varsayılan O" />
+        <RadioButton
+            android:id="@+id/oImageRedPink"
+            android:text="Pembe O" />
+        <RadioButton
+            android:id="@+id/oImageBrainRot"
+            android:text="BrainRot O" />
+        <RadioButton
+            android:id="@+id/oImageGray"
+            android:text="Gri O" />
+    </RadioGroup>
 
     <Button
         android:id="@+id/saveSettingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="16dp"
-        android:text="Kaydet" />
+        android:text="Kaydet"
+        android:layout_marginTop="24dp" />
 
 </LinearLayout>
