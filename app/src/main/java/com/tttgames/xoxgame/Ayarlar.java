@@ -97,7 +97,7 @@ public class Ayarlar extends AppCompatActivity {
             case "KirmiziTema":
                 themeRadioGroup.check(R.id.themeRedPink);
                 break;
-            case "BrainrotTema":
+            case "BrainRotTema":
                 themeRadioGroup.check(R.id.themeBrainRot);
                 break;
             default:
