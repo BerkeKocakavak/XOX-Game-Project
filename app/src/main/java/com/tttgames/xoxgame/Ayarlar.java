@@ -61,6 +61,7 @@ public class Ayarlar extends AppCompatActivity {
                     break;
                 case "BrainRotTema":
                     rootLayout.setBackgroundResource(R.drawable.tema_brainrot1);
+                    break;
                 default:
                     rootLayout.setBackgroundResource(R.drawable.tema_varsayilan1);
                     break;

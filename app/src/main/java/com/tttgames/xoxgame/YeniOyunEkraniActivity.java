@@ -66,7 +66,8 @@ public class YeniOyunEkraniActivity extends AppCompatActivity {
                     rootLayout.setBackgroundResource(R.drawable.tema_kirmizipembe1);
                     break;
                 case "BrainRotTema":
-                    rootLayout.setBackgroundResource(R.drawable.tema_brainrot1); // Doğru görsel adını kullandık
+                    rootLayout.setBackgroundResource(R.drawable.tema_brainrot1);
+                    break;
                 default:
                     rootLayout.setBackgroundResource(R.drawable.tema_varsayilan1);
                     break;
