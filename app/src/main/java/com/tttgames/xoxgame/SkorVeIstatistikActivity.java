@@ -1,0 +1,93 @@
+package com.tttgames.xoxgame;
+
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
+import android.database.Cursor;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+
+public class SkorVeIstatistikActivity extends AppCompatActivity {
+
+    private DatabaseHelper databaseHelper;
+    private ListView listViewMaclar;
+    private ListView listViewIstatistik;
+    private Button btnTemizle;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.skor_ve_istatistik);  // Bu XML'i bir sonraki adımda yapacağız
+
+        databaseHelper = new DatabaseHelper(this);
+
+        listViewMaclar = findViewById(R.id.listViewMaclar);
+        listViewIstatistik = findViewById(R.id.listViewIstatistik);
+        btnTemizle = findViewById(R.id.btnTemizle);
+
+
+        yukleMacGecmisi();
+        yukleOyuncuIstatistikleri();
+
+        btnTemizle.setOnClickListener(v -> {
+            databaseHelper.clearAllData();
+            Toast.makeText(this, "Tüm maçlar ve istatistikler silindi.", Toast.LENGTH_SHORT).show();
+            yukleMacGecmisi();
+            yukleOyuncuIstatistikleri();
+        });
+    }
+
+    private void yukleMacGecmisi() {
+        ArrayList<String> matchResults = new ArrayList<>();
+        Cursor cursor = databaseHelper.getAllMatchResults();
+
+        if (cursor.moveToFirst()) {
+            do {
+                String player1 = cursor.getString(cursor.getColumnIndexOrThrow("player1"));
+                String player2 = cursor.getString(cursor.getColumnIndexOrThrow("player2"));
+                String winner = cursor.getString(cursor.getColumnIndexOrThrow("winner"));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+
+                String resultText;
+                if (winner.equals("Draw")) {
+                    resultText = date + ": " + player1 + " vs " + player2 + " → Berabere";
+                } else {
+                    resultText = date + ": " + winner + " kazandı (" + player1 + " vs " + player2 + ")";
+                }
+
+                matchResults.add(resultText);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, matchResults);
+        listViewMaclar.setAdapter(adapter);
+    }
+
+
+    private void yukleOyuncuIstatistikleri() {
+        ArrayList<String> statsList = new ArrayList<>();
+        Cursor cursor = databaseHelper.getAllPlayerStats();
+
+        if (cursor.moveToFirst()) {
+            do {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                int wins = cursor.getInt(cursor.getColumnIndexOrThrow("wins"));
+                int losses = cursor.getInt(cursor.getColumnIndexOrThrow("losses"));
+                int draws = cursor.getInt(cursor.getColumnIndexOrThrow("draws"));
+
+                statsList.add(name + " - Galibiyet: " + wins + ", Mağlubiyet: " + losses + ", Beraberlik: " + draws);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        StatListAdapter adapter = new StatListAdapter(this, statsList);
+        listViewIstatistik.setAdapter(adapter);
+    }
+
+}

@@ -1,7 +1,7 @@
 package com.tttgames.xoxgame;
+import com.tttgames.xoxgame.DatabaseHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import android.os.Looper;
 
 public class OyunEkrani extends AppCompatActivity {
 
+    private DatabaseHelper databaseHelper;
     private static final String TAG = "OyunEkrani";
     private TextView tvPlayer1Name;
     private TextView tvPlayer2Name;
@@ -37,6 +38,8 @@ public class OyunEkrani extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.oyunekrani);
+        databaseHelper = new DatabaseHelper(this);
+
 
         rootLayout = findViewById(R.id.rootLayout);
         applyThemeFromSettings(); // Tema ve ikonları uygula
@@ -266,6 +269,7 @@ public class OyunEkrani extends AppCompatActivity {
         } else {
             switchPlayer();
         }
+
     }
     private void handleGameOver(PlayerEnum result) {
         if (isFinishing()) return;
@@ -289,13 +293,25 @@ public class OyunEkrani extends AppCompatActivity {
                 break;
         }
 
+        // Veritabanına sonucu kaydet
+        if (gameMode == 4) {
+            String winnerName = null;
+            if (result == PlayerEnum.XPlayer) {
+                winnerName = player1Name;
+            } else if (result == PlayerEnum.OPlayer) {
+                winnerName = player2Name;
+            }
+            databaseHelper.addMatchResult(player1Name, player2Name, winnerName);
+        }
+
         showToast(message);
         gameResetPending = true;
         showResetButton();
         if (gameMode == 4) {
-            tvTurn.setVisibility(View.GONE); // Oyun bittiğinde çok oyunculu modda sırayı gizle
+            tvTurn.setVisibility(View.GONE);
         }
     }
+
 
     private void switchPlayer() {
         currentPlayer = (currentPlayer == 1) ? 2 : 1;

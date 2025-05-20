@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnScoreTable.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SkorTablosu.class);
+            Intent intent = new Intent(MainActivity.this, SkorVeIstatistikActivity.class);
             startActivity(intent);
         });
 

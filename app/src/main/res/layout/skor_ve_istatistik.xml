@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scoreLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tema_varsayilan"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/txtBaslik"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:text="Skor ve İstatistikler"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="🕹️ Maç Geçmişi"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/listViewMaclar"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="👤 Oyuncu İstatistikleri"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/listViewIstatistik"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnTemizle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="#D32F2F"
+        android:padding="12dp"
+        android:text="Tüm Verileri Temizle"
+        android:textColor="#FFFFFF" />
+</LinearLayout>
