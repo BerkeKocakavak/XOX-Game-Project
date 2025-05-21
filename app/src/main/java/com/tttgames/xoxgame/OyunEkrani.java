@@ -242,23 +242,24 @@ public class OyunEkrani extends AppCompatActivity {
 
 
 
-        AIPlayer.Difficulty difficulty = null;
+        MoveStrategy strategy = null;
+
         switch (gameMode) {
             case 1:
-                difficulty = AIPlayer.Difficulty.EASY;
+                strategy = new EasyStrategy();
                 break;
             case 2:
-                difficulty = AIPlayer.Difficulty.MEDIUM;
+                strategy = new MediumStrategy();
                 break;
             case 3:
-                difficulty = AIPlayer.Difficulty.HARD;
+                strategy = new HardStrategy();
                 break;
         }
 
-        AIPlayer ai = new AIPlayer("AI", 'O', difficulty, board);
+        AIPlayer ai = new AIPlayer("AI", 'O', strategy);
         int[] move = ai.makeMove(board.getBoard());
 
-        board.getBoard()[move[0]][move[1]] = 'O';
+        board.makeMoveInBoard(move[0], move[1], 'O');
         buttons[move[0]][move[1]].setBackgroundResource(oDrawableResId);
         buttons[move[0]][move[1]].setEnabled(false);
 
@@ -300,8 +301,10 @@ public class OyunEkrani extends AppCompatActivity {
                 winnerName = player1Name;
             } else if (result == PlayerEnum.OPlayer) {
                 winnerName = player2Name;
+            } else if (result == PlayerEnum.TIE) {
+                winnerName = "Draw";
             }
-            databaseHelper.addMatchResult(player1Name, player2Name, winnerName);
+                databaseHelper.addMatchResult(player1Name, player2Name, winnerName);
         }
 
         showToast(message);

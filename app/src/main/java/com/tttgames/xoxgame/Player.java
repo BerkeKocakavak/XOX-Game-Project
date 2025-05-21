@@ -1,6 +1,6 @@
 package com.tttgames.xoxgame;
 
-public abstract class Player {
+public abstract class Player implements PlayerBehavior {
     private String name;
     private int wins;
     private int loses;

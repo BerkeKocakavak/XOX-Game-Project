@@ -58,7 +58,7 @@ public class SkorVeIstatistikActivity extends AppCompatActivity {
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
 
                 String resultText;
-                if (winner.equals("Draw")) {
+                if ("Draw".equals(winner)) {
                     resultText = date + ": " + player1 + " vs " + player2 + " → Berabere";
                 } else {
                     resultText = date + ": " + winner + " kazandı (" + player1 + " vs " + player2 + ")";

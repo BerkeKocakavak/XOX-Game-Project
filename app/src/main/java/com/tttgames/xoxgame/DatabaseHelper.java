@@ -89,10 +89,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void updateStats(String player1, String player2, String winner) {
-        if (winner.equals("Draw")) {
+        if ("Draw".equals(winner)) {
             incrementDraw(player1);
             incrementDraw(player2);
-        } else {
+        } else if (winner != null) {
             incrementWin(winner);
             if (winner.equals(player1)) {
                 incrementLoss(player2);
@@ -101,6 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
     }
+
 
     private void incrementWin(String name) {
         updateStat(name, COLUMN_WINS);
