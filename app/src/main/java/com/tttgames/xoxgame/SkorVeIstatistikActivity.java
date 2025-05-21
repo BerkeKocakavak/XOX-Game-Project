@@ -1,8 +1,11 @@
 package com.tttgames.xoxgame;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.database.Cursor;
@@ -17,12 +20,14 @@ public class SkorVeIstatistikActivity extends AppCompatActivity {
     private ListView listViewMaclar;
     private ListView listViewIstatistik;
     private Button btnTemizle;
+    private LinearLayout rootLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.skor_ve_istatistik);  // Bu XML'i bir sonraki adımda yapacağız
-
+        rootLayout = findViewById(R.id.rootLayout);
+        applyThemeFromSettings();
         databaseHelper = new DatabaseHelper(this);
 
         listViewMaclar = findViewById(R.id.listViewMaclar);
@@ -88,6 +93,27 @@ public class SkorVeIstatistikActivity extends AppCompatActivity {
 
         StatListAdapter adapter = new StatListAdapter(this, statsList);
         listViewIstatistik.setAdapter(adapter);
+    }
+    private void applyThemeFromSettings() {
+        SharedPreferences sharedPreferences = getSharedPreferences("game_settings", Context.MODE_PRIVATE);
+        String selectedTheme = sharedPreferences.getString("other_screens_theme", "Varsayilan");
+
+        if (rootLayout != null) {
+            switch (selectedTheme) {
+                case "SiyahBeyaz":
+                    rootLayout.setBackgroundResource(R.drawable.tema_siyahbeyaz1);
+                    break;
+                case "KirmiziTema":
+                    rootLayout.setBackgroundResource(R.drawable.tema_kirmizipembe1);
+                    break;
+                case "BrainRotTema":
+                    rootLayout.setBackgroundResource(R.drawable.tema_brainrot1);
+                    break;
+                default:
+                    rootLayout.setBackgroundResource(R.drawable.tema_varsayilan1);
+                    break;
+            }
+        }
     }
 
 }
