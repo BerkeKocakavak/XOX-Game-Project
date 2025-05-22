@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Ayarlar extends AppCompatActivity {
-    private Switch soundSwitch;
+
     private RadioGroup themeRadioGroup, xImageRadioGroup, oImageRadioGroup;
     private Button saveSettingsButton;
     private SharedPreferences sharedPreferences;
@@ -28,18 +28,16 @@ public class Ayarlar extends AppCompatActivity {
         setContentView(R.layout.ayarlar);
 
         rootLayout = findViewById(R.id.rootLayout);
-        soundSwitch = findViewById(R.id.soundSwitch);
         themeRadioGroup = findViewById(R.id.themeRadioGroup);
         xImageRadioGroup = findViewById(R.id.xImageRadioGroup);
         oImageRadioGroup = findViewById(R.id.oImageRadioGroup);
         saveSettingsButton = findViewById(R.id.saveSettingsButton);
-        volumeSeekBar = findViewById(R.id.volumeSeekBar);
+
 
         sharedPreferences = getSharedPreferences("game_settings", MODE_PRIVATE);
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
 
         applyThemeBackgroundFromSettings(); // Bu satır kalmalı
-        setupSoundSettings();
         setupThemeAndImageSettings(); // Tema ve imaj ayarlarını yükleme fonksiyonu
 
         saveSettingsButton.setOnClickListener(v -> {
@@ -67,24 +65,6 @@ public class Ayarlar extends AppCompatActivity {
                     break;
             }
         }
-    }
-
-    private void setupSoundSettings() {
-        boolean isSoundEnabled = sharedPreferences.getBoolean("sound_enabled", true);
-        soundSwitch.setChecked(isSoundEnabled);
-
-        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        volumeSeekBar.setMax(maxVolume);
-        int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        volumeSeekBar.setProgress(currentVolume);
-
-        volumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
-            }
-            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
     }
 
     private void setupThemeAndImageSettings() {
@@ -132,7 +112,6 @@ public class Ayarlar extends AppCompatActivity {
 
     private void saveSettings() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("sound_enabled", soundSwitch.isChecked());
 
         // Tema seçimi (Oyun Ekranı için)
         int selectedThemeId = themeRadioGroup.getCheckedRadioButtonId();
