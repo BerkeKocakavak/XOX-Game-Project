@@ -1,18 +1,19 @@
 package com.tttgames.xoxgame;
-import com.tttgames.xoxgame.DatabaseHelper;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Log;
-import android.os.Handler;
-import android.os.Looper;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class OyunEkrani extends AppCompatActivity {
 
@@ -21,7 +22,7 @@ public class OyunEkrani extends AppCompatActivity {
     private TextView tvPlayer1Name;
     private TextView tvPlayer2Name;
     private TextView tvTurn;
-    private Button[][] buttons = new Button[3][3];
+    private ImageButton[][] buttons = new ImageButton[3][3];
     private Board board;
     private int currentPlayer = 1;
     private boolean gameOver = false;
@@ -34,22 +35,22 @@ public class OyunEkrani extends AppCompatActivity {
     private LinearLayout rootLayout;
     private int xDrawableResId = R.drawable.x_image;
     private int oDrawableResId = R.drawable.o_image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.oyunekrani);
         databaseHelper = new DatabaseHelper(this);
 
-
         rootLayout = findViewById(R.id.rootLayout);
-        applyThemeFromSettings(); // Tema ve ikonları uygula
-        // UI öğelerini başlat
+        applyThemeFromSettings();
+
         tvPlayer1Name = findViewById(R.id.tvPlayer1Name);
         tvPlayer2Name = findViewById(R.id.tvPlayer2Name);
         tvTurn = findViewById(R.id.tvTurn);
         btnReset = findViewById(R.id.btnReset);
 
-        // Butonları başlat
+        // ImageButton tanımlamaları
         buttons[0][0] = findViewById(R.id.btn00);
         buttons[0][1] = findViewById(R.id.btn01);
         buttons[0][2] = findViewById(R.id.btn02);
@@ -60,50 +61,27 @@ public class OyunEkrani extends AppCompatActivity {
         buttons[2][1] = findViewById(R.id.btn21);
         buttons[2][2] = findViewById(R.id.btn22);
 
-        // Buton tıklama olaylarını ayarla
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (buttons[i][j] != null) {
-                    final int row = i;
-                    final int col = j;
-                    buttons[i][j].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mainHandler.post(() -> {
-                                try {
-                                    if (!gameOver) { // Oyun bitmemişse hücreye tıklanabilir
-                                        onCellClicked(row, col);
-                                    }
-                                } catch (Exception e) {
-                                    Log.e(TAG, "Error in onClick: ", e);
-                                    showToast("Bir hata oluştu: " + e.getMessage());
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    Log.e(TAG, "Button at position [" + i + "][" + j + "] is null!");
-                }
+                final int row = i;
+                final int col = j;
+                buttons[i][j].setOnClickListener(v -> {
+                    if (!gameOver) {
+                        onCellClicked(row, col);
+                    }
+                });
             }
         }
 
-        // Reset butonu tıklama olayını ayarla
-        btnReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mainHandler.post(() -> {
-                    resetGame();
-                    gameResetPending = false;
-                });
-            }
+        btnReset.setOnClickListener(v -> {
+            resetGame();
+            gameResetPending = false;
         });
 
-        // Oyun modunu ve oyuncu adlarını al
         gameMode = getIntent().getIntExtra("GAME_MODE", 0);
         player1Name = getIntent().getStringExtra("PLAYER1_NAME");
         player2Name = getIntent().getStringExtra("PLAYER2_NAME");
 
-        // Varsayılan adlar
         if (player1Name == null) player1Name = "Oyuncu 1";
         if (player2Name == null) player2Name = (gameMode == 4) ? "Oyuncu 2" : "Yapay Zeka";
 
@@ -112,34 +90,26 @@ public class OyunEkrani extends AppCompatActivity {
     }
 
     private void initializeBoard() {
-        char[][] initialBoard = {
-                {'\0', '\0', '\0'},
-                {'\0', '\0', '\0'},
-                {'\0', '\0', '\0'}
-        };
-        board = new Board(initialBoard);
+        board = new Board(new char[3][3]);
         gameOver = false;
         currentPlayer = 1;
-        updateTurnLabel(); // Başlangıçta oyuncu adını göster
+        updateTurnLabel();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (buttons[i][j] != null) {
-                    buttons[i][j].setText("");
-                    buttons[i][j].setBackgroundResource(0);
-                    buttons[i][j].setEnabled(true);
-                }
+                buttons[i][j].setImageResource(0);
+                buttons[i][j].setEnabled(true);
             }
         }
         gameResetPending = false;
         btnReset.setVisibility(View.GONE);
     }
-    private void applyThemeFromSettings() {
-        SharedPreferences sharedPreferences = getSharedPreferences("game_settings", Context.MODE_PRIVATE);
-        String selectedTheme = sharedPreferences.getString("current_theme", "Varsayilan");
-        String xImagePref = sharedPreferences.getString("x_image", "x_image");
-        String oImagePref = sharedPreferences.getString("o_image", "o_image");
 
-        // Arka plan temasını uygula
+    private void applyThemeFromSettings() {
+        SharedPreferences prefs = getSharedPreferences("game_settings", Context.MODE_PRIVATE);
+        String selectedTheme = prefs.getString("current_theme", "Varsayilan");
+        String xImagePref = prefs.getString("x_image", "x_image");
+        String oImagePref = prefs.getString("o_image", "o_image");
+
         if (rootLayout != null) {
             switch (selectedTheme) {
                 case "SiyahBeyaz":
@@ -153,11 +123,9 @@ public class OyunEkrani extends AppCompatActivity {
                     break;
                 default:
                     rootLayout.setBackgroundResource(R.drawable.tema_varsayilan);
-                    break;
             }
         }
 
-        // X ikonu kaynağını belirle... (Aynı kalabilir)
         switch (xImagePref) {
             case "x_pembe":
                 xDrawableResId = R.drawable.x_pembe;
@@ -170,10 +138,8 @@ public class OyunEkrani extends AppCompatActivity {
                 break;
             default:
                 xDrawableResId = R.drawable.x_image;
-                break;
         }
 
-        // O ikonu kaynağını belirle... (Aynı kalabilir)
         switch (oImagePref) {
             case "o_pembe":
                 oDrawableResId = R.drawable.o_pembe;
@@ -186,42 +152,30 @@ public class OyunEkrani extends AppCompatActivity {
                 break;
             default:
                 oDrawableResId = R.drawable.o_image;
-                break;
         }
     }
 
-
-        private void setupGameScreen() {
+    private void setupGameScreen() {
         if (gameMode >= 1 && gameMode <= 3) {
             tvPlayer1Name.setText("Bilgisayara Karşı");
             tvPlayer2Name.setText("");
-            tvTurn.setVisibility(View.GONE); // Bilgisayar oyununda sırayı gizle
+            tvTurn.setVisibility(View.GONE);
         } else {
             tvPlayer1Name.setText("Oyuncu: " + player1Name);
             tvPlayer2Name.setText("Oyuncu: " + player2Name);
-            tvTurn.setVisibility(View.VISIBLE); // Çok oyunculu modda sırayı göster
+            tvTurn.setVisibility(View.VISIBLE);
         }
         updateTurnLabel();
     }
 
     private void onCellClicked(int row, int col) {
-        if (gameOver || board == null || row < 0 || row > 2 || col < 0 || col > 2) return;
         if (board.getBoard()[row][col] != '\0') return;
 
-        char playerSymbol = (currentPlayer == 1) ? 'X' : 'O';
-        board.getBoard()[row][col] = playerSymbol;
+        char symbol = currentPlayer == 1 ? 'X' : 'O';
+        board.getBoard()[row][col] = symbol;
 
-        Button clickedButton = buttons[row][col];
-        if (clickedButton != null) {
-            if (playerSymbol == 'X') {
-                clickedButton.setBackgroundResource(xDrawableResId);
-            } else {
-                clickedButton.setBackgroundResource(oDrawableResId);
-            }
-            clickedButton.setEnabled(false);
-        } else {
-            Log.e(TAG, "Button is null in onCellClicked! row = " + row + ", col = " + col);
-        }
+        buttons[row][col].setImageResource(symbol == 'X' ? xDrawableResId : oDrawableResId);
+        buttons[row][col].setEnabled(false);
 
         PlayerEnum result = board.evaluateBoard();
         if (result != null) {
@@ -240,10 +194,7 @@ public class OyunEkrani extends AppCompatActivity {
     private void computerMove() {
         if (gameOver) return;
 
-
-
-        MoveStrategy strategy = null;
-
+        MoveStrategy strategy;
         switch (gameMode) {
             case 1:
                 strategy = new EasyStrategy();
@@ -254,13 +205,17 @@ public class OyunEkrani extends AppCompatActivity {
             case 3:
                 strategy = new HardStrategy();
                 break;
+            default:
+                strategy = null;
         }
+
+        if (strategy == null) return;
 
         AIPlayer ai = new AIPlayer("AI", 'O', strategy);
         int[] move = ai.makeMove(board.getBoard());
 
         board.makeMoveInBoard(move[0], move[1], 'O');
-        buttons[move[0]][move[1]].setBackgroundResource(oDrawableResId);
+        buttons[move[0]][move[1]].setImageResource(oDrawableResId);
         buttons[move[0]][move[1]].setEnabled(false);
 
         PlayerEnum result = board.evaluateBoard();
@@ -270,88 +225,59 @@ public class OyunEkrani extends AppCompatActivity {
         } else {
             switchPlayer();
         }
-
     }
-    private void handleGameOver(PlayerEnum result) {
-        if (isFinishing()) return;
 
+    private void handleGameOver(PlayerEnum result) {
         String message;
         switch (result) {
             case XPlayer:
-                message = player1Name + " Kazandı!";
-                if (gameMode != 4) {
-                    message = "Kazandınız!";
-                }
+                message = (gameMode != 4) ? "Kazandınız!" : player1Name + " Kazandı!";
                 break;
             case OPlayer:
-                message = (gameMode == 4) ? player2Name + " Kazandı!" : "Yapay Zeka Kazandı!";
+                message = (gameMode != 4) ? "Yapay Zeka Kazandı!" : player2Name + " Kazandı!";
                 break;
             case TIE:
                 message = "Berabere!";
                 break;
             default:
                 message = "Bilinmeyen sonuç!";
-                break;
         }
 
-        // Veritabanına sonucu kaydet
         if (gameMode == 4) {
-            String winnerName = null;
-            if (result == PlayerEnum.XPlayer) {
-                winnerName = player1Name;
-            } else if (result == PlayerEnum.OPlayer) {
-                winnerName = player2Name;
-            } else if (result == PlayerEnum.TIE) {
-                winnerName = "Draw";
-            }
-                databaseHelper.addMatchResult(player1Name, player2Name, winnerName);
+            String winner = (result == PlayerEnum.XPlayer) ? player1Name :
+                    (result == PlayerEnum.OPlayer) ? player2Name : "Draw";
+            databaseHelper.addMatchResult(player1Name, player2Name, winner);
         }
 
         showToast(message);
         gameResetPending = true;
         showResetButton();
-        if (gameMode == 4) {
-            tvTurn.setVisibility(View.GONE);
-        }
+        tvTurn.setVisibility(View.GONE);
     }
 
+    private void showResetButton() {
+        btnReset.setVisibility(View.VISIBLE);
+    }
 
     private void switchPlayer() {
-        currentPlayer = (currentPlayer == 1) ? 2 : 1;
+        currentPlayer = currentPlayer == 1 ? 2 : 1;
         updateTurnLabel();
     }
 
     private void updateTurnLabel() {
-        if (tvTurn != null) {
-            if (gameMode >= 1 && gameMode <= 3) {
-                tvTurn.setText("");
-            } else {
-                tvTurn.setText("Sıra: " + ((currentPlayer == 1) ? player1Name : player2Name));
-            }
+        if (gameMode == 4) {
+            tvTurn.setText("Sıra: " + (currentPlayer == 1 ? player1Name : player2Name));
         }
     }
 
     private void resetGame() {
-        if (isFinishing()) return;
-        try {
-            initializeBoard();
-            if (gameMode == 4) {
-                tvTurn.setVisibility(View.VISIBLE); // Oyunu yeniden başlattığında çok oyunculu modda sırayı göster
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error resetting the game", e);
-            showToast("Oyun sıfırlanırken bir hata oluştu: " + e.getMessage());
+        initializeBoard();
+        if (gameMode == 4) {
+            tvTurn.setVisibility(View.VISIBLE);
         }
     }
 
     private void showToast(final String message) {
-        if (isFinishing()) return;
         mainHandler.post(() -> Toast.makeText(OyunEkrani.this, message, Toast.LENGTH_LONG).show());
-    }
-
-    private void showResetButton() {
-        if (btnReset != null) {
-            btnReset.setVisibility(View.VISIBLE);
-        }
     }
 }

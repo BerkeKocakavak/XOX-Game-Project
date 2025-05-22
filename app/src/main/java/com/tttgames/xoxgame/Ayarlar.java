@@ -1,14 +1,11 @@
 package com.tttgames.xoxgame;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
-import android.widget.Switch;
+
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +15,6 @@ public class Ayarlar extends AppCompatActivity {
     private RadioGroup themeRadioGroup, xImageRadioGroup, oImageRadioGroup;
     private Button saveSettingsButton;
     private SharedPreferences sharedPreferences;
-    private AudioManager audioManager;
-    private SeekBar volumeSeekBar;
     private LinearLayout rootLayout;
 
     @Override
@@ -33,11 +28,9 @@ public class Ayarlar extends AppCompatActivity {
         oImageRadioGroup = findViewById(R.id.oImageRadioGroup);
         saveSettingsButton = findViewById(R.id.saveSettingsButton);
 
-
         sharedPreferences = getSharedPreferences("game_settings", MODE_PRIVATE);
 
-
-        applyThemeBackgroundFromSettings(); // Bu satır kalmalı
+        applyThemeBackgroundFromSettings();
         setupThemeAndImageSettings(); // Tema ve imaj ayarlarını yükleme fonksiyonu
 
         saveSettingsButton.setOnClickListener(v -> {

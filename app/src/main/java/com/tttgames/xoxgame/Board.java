@@ -1,5 +1,4 @@
 package com.tttgames.xoxgame;
-
 class Board {
     private char[][] board;
 
@@ -11,22 +10,9 @@ class Board {
         return board;
     }
 
-    public void setBoard(char[][] board) {
-        this.board = board;
-    }
     public void makeMoveInBoard(int row, int col, char value)
     {
         board[row][col] = value;
-    }
-
-    public void makeMoveInBoard()
-    {
-
-    }
-
-    public char getValueInBoard(int row, int col)
-    {
-        return board[row][col];
     }
 
     public PlayerEnum evaluateBoard() {

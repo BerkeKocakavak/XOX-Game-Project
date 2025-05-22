@@ -1,12 +1,12 @@
 package com.tttgames.xoxgame;
-import com.tttgames.xoxgame.DatabaseHelper;
 
+import com.tttgames.xoxgame.DatabaseHelper;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.ArrayAdapter;
@@ -93,8 +93,12 @@ public class YeniOyunEkraniActivity extends AppCompatActivity {
             player2Name = "Yapay Zeka";
         }
 
-        databaseHelper.addPlayerIfNotExists(player1Name);
-        databaseHelper.addPlayerIfNotExists(player2Name);
+        //only add players ıf it's a pvp game
+
+        if (gameMode == 4) {
+            databaseHelper.addPlayerIfNotExists(player1Name);
+            databaseHelper.addPlayerIfNotExists(player2Name);
+        }
 
         Intent intent = new Intent(this, OyunEkrani.class);
         intent.putExtra("GAME_MODE", gameMode);
