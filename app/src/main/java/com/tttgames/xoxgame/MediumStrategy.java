@@ -2,7 +2,7 @@ package com.tttgames.xoxgame;
 
 import java.util.Random;
 
-public class MediumStrategy implements MoveStrategy {
+public class MediumStrategy implements MoveStrategy { //MediumMove Strategy For AIplayer
 
     private final EasyStrategy easyStrategy = new EasyStrategy();
     private final HardStrategy hardStrategy = new HardStrategy();

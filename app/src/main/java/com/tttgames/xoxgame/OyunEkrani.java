@@ -50,7 +50,7 @@ public class OyunEkrani extends AppCompatActivity {
         tvTurn = findViewById(R.id.tvTurn);
         btnReset = findViewById(R.id.btnReset);
 
-        // ImageButton tanımlamaları
+        // ImageButton Definings
         buttons[0][0] = findViewById(R.id.btn00);
         buttons[0][1] = findViewById(R.id.btn01);
         buttons[0][2] = findViewById(R.id.btn02);
@@ -89,7 +89,7 @@ public class OyunEkrani extends AppCompatActivity {
         initializeBoard();
     }
 
-    private void initializeBoard() {
+    private void initializeBoard() {  // İnitializing Board
         board = new Board(new char[3][3]);
         gameOver = false;
         currentPlayer = 1;
@@ -191,7 +191,7 @@ public class OyunEkrani extends AppCompatActivity {
         }
     }
 
-    private void computerMove() {
+    private void computerMove() {  //AI move Selection
         if (gameOver) return;
 
         MoveStrategy strategy;
@@ -227,7 +227,7 @@ public class OyunEkrani extends AppCompatActivity {
         }
     }
 
-    private void handleGameOver(PlayerEnum result) {
+    private void handleGameOver(PlayerEnum result) { //According to the game situations
         String message;
         switch (result) {
             case XPlayer:

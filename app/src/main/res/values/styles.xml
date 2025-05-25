@@ -1,5 +1,5 @@
 <resources>
-    <!-- Oyun butonu için stil -->
+    <!-- For Game buton Style -->
     <style name="GameCellButton">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
@@ -15,22 +15,22 @@
 
 
 
-    <!-- Tema: Brainrot -->
+    <!-- Theme: Brainrot -->
     <style name="AppTheme_Brainrot" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@drawable/tema_brainrot</item>
     </style>
 
-    <!-- Tema: Siyah Beyaz -->
+    <!-- Theme: Siyah Beyaz -->
     <style name="AppTheme_SiyahBeyaz" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@drawable/tema_siyahbeyaz</item>
     </style>
 
-    <!-- Tema: Kırmızı Pembe -->
+    <!-- Theme: Kırmızı Pembe -->
     <style name="AppTheme_KirmiziTema" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@drawable/tema_kirmizipembe</item>
     </style>
 
-    <!-- Varsayılan Tema -->
+    <!-- Default Theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

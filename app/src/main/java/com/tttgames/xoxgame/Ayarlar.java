@@ -31,7 +31,7 @@ public class Ayarlar extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("game_settings", MODE_PRIVATE);
 
         applyThemeBackgroundFromSettings();
-        setupThemeAndImageSettings(); // Tema ve imaj ayarlarını yükleme fonksiyonu
+        setupThemeAndImageSettings(); //Theme and Image Settıngs applying func.
 
         saveSettingsButton.setOnClickListener(v -> {
             saveSettings();
@@ -61,7 +61,7 @@ public class Ayarlar extends AppCompatActivity {
     }
 
     private void setupThemeAndImageSettings() {
-        // Tema ayarlarını yükle
+
         String currentTheme = sharedPreferences.getString("current_theme", "Varsayilan");
         switch (currentTheme) {
             case "SiyahBeyaz":
@@ -78,7 +78,7 @@ public class Ayarlar extends AppCompatActivity {
                 break;
         }
 
-        // X imaj ayarlarını yükle
+        // Load x images
         String xImage = sharedPreferences.getString("x_image", "x_image");
         if ("x_image".equals(xImage)) {
             xImageRadioGroup.check(R.id.xImageDefault);
@@ -90,7 +90,7 @@ public class Ayarlar extends AppCompatActivity {
             xImageRadioGroup.check(R.id.xImageGray);
         }
 
-        // O imaj ayarlarını yükle
+        // Load O images
         String oImage = sharedPreferences.getString("o_image", "o_image");
         if ("o_image".equals(oImage)) {
             oImageRadioGroup.check(R.id.oImageDefault);
@@ -106,7 +106,7 @@ public class Ayarlar extends AppCompatActivity {
     private void saveSettings() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        // Tema seçimi (Oyun Ekranı için)
+        // Theme Selection for Game Screen
         int selectedThemeId = themeRadioGroup.getCheckedRadioButtonId();
         String selectedTheme = "Varsayilan";
         if (selectedThemeId == R.id.themeBlackWhite) {
@@ -118,7 +118,7 @@ public class Ayarlar extends AppCompatActivity {
         }
         editor.putString("current_theme", selectedTheme);
 
-        // Tema seçimi (Diğer Ekranlar için)
+        // Theme Selection for other screens
         String otherScreenTheme = "Varsayilan";
         if (selectedThemeId == R.id.themeBlackWhite) {
             otherScreenTheme = "SiyahBeyaz";
@@ -129,7 +129,7 @@ public class Ayarlar extends AppCompatActivity {
         }
         editor.putString("other_screens_theme", otherScreenTheme);
 
-        // X ikon seçimi... (Aynı kalabilir)
+        // X Icon selection
         int selectedXImageId = xImageRadioGroup.getCheckedRadioButtonId();
         String xImageValue = "x_image";
         if (selectedXImageId == R.id.xImageRedPink) {
@@ -143,7 +143,7 @@ public class Ayarlar extends AppCompatActivity {
         }
         editor.putString("x_image", xImageValue);
 
-        // O ikon seçimi... (Aynı kalabilir)
+        // O Icon selection
         int selectedOImageId = oImageRadioGroup.getCheckedRadioButtonId();
         String oImageValue = "o_image";
         if (selectedOImageId == R.id.oImageRedPink) {

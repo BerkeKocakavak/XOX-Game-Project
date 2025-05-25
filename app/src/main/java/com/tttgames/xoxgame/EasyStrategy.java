@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EasyStrategy implements MoveStrategy {
+public class EasyStrategy implements MoveStrategy { // Easy Move strategy for AI
 
     private final Random random = new Random();
 

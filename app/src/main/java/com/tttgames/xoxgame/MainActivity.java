@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout rootLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) { // Activitys and Intention
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -39,18 +39,16 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Temayı onCreate'te de uygula (ilk açılış için)
         applyThemeFromSettings();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Aktivite ön plana çıktığında temayı tekrar uygula
         applyThemeFromSettings();
     }
 
-    private void applyThemeFromSettings() {
+    private void applyThemeFromSettings() { // Apply Theme from Settings
         SharedPreferences sharedPreferences = getSharedPreferences("game_settings", Context.MODE_PRIVATE);
         String selectedTheme = sharedPreferences.getString("other_screens_theme", "Varsayilan");
 

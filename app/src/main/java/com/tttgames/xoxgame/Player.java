@@ -3,7 +3,7 @@ package com.tttgames.xoxgame;
 public abstract class Player implements PlayerBehavior {
     private String name;
 
-    //X ya da O
+    //X or O
     private char symbol;
 
     public Player(String name, char symbol) {

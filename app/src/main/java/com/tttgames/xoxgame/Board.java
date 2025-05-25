@@ -16,7 +16,7 @@ class Board {
     }
 
     public PlayerEnum evaluateBoard() {
-        // Satır kontrol
+        // Row check
         for (int row = 0; row < 3; ++row) {
             if (board[row][0] == board[row][1] && board[row][1] == board[row][2]) {
                 if (board[row][0] == 'X') return PlayerEnum.XPlayer;
@@ -24,7 +24,7 @@ class Board {
             }
         }
 
-        // Sütun kontrol
+        // column check
         for (int col = 0; col < 3; ++col) {
             if (board[0][col] == board[1][col] && board[1][col] == board[2][col]) {
                 if (board[0][col] == 'X') return PlayerEnum.XPlayer;
@@ -32,7 +32,7 @@ class Board {
             }
         }
 
-        // Çapraz kontrol
+        // Cross check
         if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
             if (board[0][0] == 'X') return PlayerEnum.XPlayer;
             else if (board[0][0] == 'O') return PlayerEnum.OPlayer;
@@ -42,13 +42,13 @@ class Board {
             else if (board[0][2] == 'O') return PlayerEnum.OPlayer;
         }
 
-        // Beraberlik kontrolü
+        // Draw Check
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (board[i][j] == '\0')
-                    return null; // Boş hücre varsa oyun bitmedi
+                    return null; // There is a null board then the game is not finished
             }
         }
-        return PlayerEnum.TIE; // Eğer boş hücre yoksa ve kazanan yoksa, oyun berabere
+        return PlayerEnum.TIE; // If there is no null board then game finished and draw
     }
 }

@@ -22,7 +22,6 @@ public class YeniOyunEkraniActivity extends AppCompatActivity {
     private LinearLayout rootLayout;
     private Button btnEasy, btnMedium, btnHard, btnStartGame;
 
-    // onCreate dışına taşı
     private void setupAutoCompleteNames() {
         List<String> playerNames = databaseHelper.getAllPlayerNames();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, playerNames);
@@ -65,13 +64,10 @@ public class YeniOyunEkraniActivity extends AppCompatActivity {
 
                 databaseHelper.addPlayerIfNotExists(player1Name);
                 databaseHelper.addPlayerIfNotExists(player2Name);
-                startGame(4); // 4'ün anlamı proje bağlamında belli olmalı.
+                startGame(4);
             }
         });
 
-        SharedPreferences sharedPreferences = getSharedPreferences("player_names", Context.MODE_PRIVATE);
-        String savedPlayer1 = sharedPreferences.getString("PLAYER1_NAME", "");
-        String savedPlayer2 = sharedPreferences.getString("PLAYER2_NAME", "");
         etPlayer1Name = findViewById(R.id.etPlayer1Name);
         etPlayer2Name = findViewById(R.id.etPlayer2Name);
 
@@ -93,7 +89,7 @@ public class YeniOyunEkraniActivity extends AppCompatActivity {
             player2Name = "Yapay Zeka";
         }
 
-        //only add players ıf it's a pvp game
+        //only add players if it's a pvp game
 
         if (gameMode == 4) {
             databaseHelper.addPlayerIfNotExists(player1Name);

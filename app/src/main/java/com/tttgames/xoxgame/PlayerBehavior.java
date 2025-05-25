@@ -1,6 +1,6 @@
 package com.tttgames.xoxgame;
 
-public interface PlayerBehavior
+public interface PlayerBehavior //Player Behavior Interface
 {
     int[] makeMove(char[][] board);
 

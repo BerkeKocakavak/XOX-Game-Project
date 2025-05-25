@@ -60,7 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Oyuncu ekle veya var ise dokunma
+    // Add player if exists don't touch
     public void addPlayerIfNotExists(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TABLE_PLAYERS, null, COLUMN_NAME + "=?",
@@ -73,18 +73,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
     }
 
-    // Maç sonucu kaydet
+    // Save Match Settings
     public void addMatchResult(String player1, String player2, String winner) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Ekle maç
+        // Add match
         ContentValues values = new ContentValues();
         values.put(COLUMN_PLAYER1, player1);
         values.put(COLUMN_PLAYER2, player2);
         values.put(COLUMN_WINNER, winner);
         db.insert(TABLE_MATCHES, null, values);
 
-        // İstatistikleri güncelle
+        // update stats
         updateStats(player1, player2, winner);
     }
 
@@ -121,20 +121,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{name});
     }
 
-    // Oyuncu istatistiklerini al
+    // Get player stats
     public Cursor getAllPlayerStats() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(TABLE_PLAYERS, null, null, null, null, null, COLUMN_WINS + " DESC");
     }
 
-    // Tüm maç sonuçlarını al
+    // Get all matches results
     public Cursor getAllMatchResults() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(TABLE_MATCHES, null, null, null, null, null, COLUMN_DATE + " DESC");
     }
 
-    // Tüm verileri temizle
-
+    // Clear all data
     public void clearAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_MATCHES, null, null);

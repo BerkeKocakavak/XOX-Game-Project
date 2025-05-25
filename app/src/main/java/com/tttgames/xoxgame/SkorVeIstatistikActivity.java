@@ -25,7 +25,7 @@ public class SkorVeIstatistikActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.skor_ve_istatistik);  // Bu XML'i bir sonraki adımda yapacağız
+        setContentView(R.layout.skor_ve_istatistik);
         rootLayout = findViewById(R.id.rootLayout);
         applyThemeFromSettings();
         databaseHelper = new DatabaseHelper(this);
