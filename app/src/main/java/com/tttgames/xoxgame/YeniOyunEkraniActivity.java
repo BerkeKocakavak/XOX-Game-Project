@@ -44,8 +44,8 @@ public class YeniOyunEkraniActivity extends AppCompatActivity {
         btnMedium = findViewById(R.id.btnMedium);
         btnHard = findViewById(R.id.btnHard);
         btnStartGame = findViewById(R.id.btnStartGame);
-        etPlayer1Name = findViewById(R.id.etPlayer1Name); // Bu AutoCompleteTextView olmalı
-        etPlayer2Name = findViewById(R.id.etPlayer2Name); // Bu AutoCompleteTextView olmalı
+        etPlayer1Name = findViewById(R.id.etPlayer1Name);
+        etPlayer2Name = findViewById(R.id.etPlayer2Name);
 
         btnEasy.setOnClickListener(v -> startGame(1));
         btnMedium.setOnClickListener(v -> startGame(2));

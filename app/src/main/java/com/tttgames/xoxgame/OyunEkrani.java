@@ -89,7 +89,7 @@ public class OyunEkrani extends AppCompatActivity {
         initializeBoard();
     }
 
-    private void initializeBoard() {  // İnitializing Board
+    private void initializeBoard() {  // Initializing Board
         board = new Board(new char[3][3]);
         gameOver = false;
         currentPlayer = 1;
