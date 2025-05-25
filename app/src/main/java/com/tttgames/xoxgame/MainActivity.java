@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout rootLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) { // Activitys and Intention
+    protected void onCreate(Bundle savedInstanceState) { // Activities and Intents
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         applyThemeFromSettings();
     }
 
-    private void applyThemeFromSettings() { // Apply Theme from Settings
+    private void applyThemeFromSettings() { // Applies theme from Settings
         SharedPreferences sharedPreferences = getSharedPreferences("game_settings", Context.MODE_PRIVATE);
         String selectedTheme = sharedPreferences.getString("other_screens_theme", "Varsayilan");
 

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+// This class serves only to print the stats table
 public class SkorVeIstatistikActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
@@ -22,6 +23,7 @@ public class SkorVeIstatistikActivity extends AppCompatActivity {
     private Button btnTemizle;
     private LinearLayout rootLayout;
 
+    // Prints the table
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,7 @@ public class SkorVeIstatistikActivity extends AppCompatActivity {
         });
     }
 
+    // Info of the matches played (players, result, date)
     private void yukleMacGecmisi() {
         ArrayList<String> matchResults = new ArrayList<>();
         Cursor cursor = databaseHelper.getAllMatchResults();
@@ -74,7 +77,7 @@ public class SkorVeIstatistikActivity extends AppCompatActivity {
         listViewMaclar.setAdapter(adapter);
     }
 
-
+    // Stats for PvP matches
     private void yukleOyuncuIstatistikleri() {
         ArrayList<String> statsList = new ArrayList<>();
         Cursor cursor = databaseHelper.getAllPlayerStats();

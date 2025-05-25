@@ -15,17 +15,17 @@
 
 
 
-    <!-- Theme: Brainrot -->
+    <!-- Brainrot Theme -->
     <style name="AppTheme_Brainrot" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@drawable/tema_brainrot</item>
     </style>
 
-    <!-- Theme: Siyah Beyaz -->
+    <!-- Black-White Theme -->
     <style name="AppTheme_SiyahBeyaz" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@drawable/tema_siyahbeyaz</item>
     </style>
 
-    <!-- Theme: Kırmızı Pembe -->
+    <!-- Red-Pink Theme -->
     <style name="AppTheme_KirmiziTema" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@drawable/tema_kirmizipembe</item>
     </style>

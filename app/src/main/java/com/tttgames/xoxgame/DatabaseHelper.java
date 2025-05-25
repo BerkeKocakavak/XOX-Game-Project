@@ -33,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // Stats Table
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createPlayersTable = "CREATE TABLE " + TABLE_PLAYERS + " (" +
@@ -53,6 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createMatchesTable);
     }
 
+    //Keeps the table updated
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYERS);
@@ -60,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Add player if exists don't touch
+    // Continue if player is already in the database, if not add to the database.
     public void addPlayerIfNotExists(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TABLE_PLAYERS, null, COLUMN_NAME + "=?",
@@ -73,21 +75,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
     }
 
-    // Save Match Settings
+    // Save match results
     public void addMatchResult(String player1, String player2, String winner) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Add match
+
         ContentValues values = new ContentValues();
         values.put(COLUMN_PLAYER1, player1);
         values.put(COLUMN_PLAYER2, player2);
         values.put(COLUMN_WINNER, winner);
+
+        // Saves the match to the database
         db.insert(TABLE_MATCHES, null, values);
 
-        // update stats
+        // Update the database
         updateStats(player1, player2, winner);
     }
 
+    // Updates the database
     private void updateStats(String player1, String player2, String winner) {
         if ("Draw".equals(winner)) {
             incrementDraw(player1);
@@ -115,25 +120,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         updateStat(name, COLUMN_DRAWS);
     }
 
+    // Updating the statistics of the players
     private void updateStat(String name, String column) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE " + TABLE_PLAYERS + " SET " + column + " = " + column + " + 1 WHERE " + COLUMN_NAME + " = ?",
                 new String[]{name});
     }
 
-    // Get player stats
+    // Used for reading and printing the players stats
     public Cursor getAllPlayerStats() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(TABLE_PLAYERS, null, null, null, null, null, COLUMN_WINS + " DESC");
     }
 
-    // Get all matches results
+    // Used for reading and printing the match results
     public Cursor getAllMatchResults() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(TABLE_MATCHES, null, null, null, null, null, COLUMN_DATE + " DESC");
     }
 
-    // Clear all data
+    // Clears the data
     public void clearAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_MATCHES, null, null);

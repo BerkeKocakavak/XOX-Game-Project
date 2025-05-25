@@ -89,7 +89,7 @@ public class YeniOyunEkraniActivity extends AppCompatActivity {
             player2Name = "Yapay Zeka";
         }
 
-        //only add players if it's a pvp game
+        // PvP game mode (calls the names of the players from the database)
 
         if (gameMode == 4) {
             databaseHelper.addPlayerIfNotExists(player1Name);

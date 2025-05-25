@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class StatListAdapter extends ArrayAdapter<String> {
+// Makes sure the text in the statistics page work properly
+public class StatListAdapter extends ArrayAdapter<String> { // Standard class in Android that prints the data
 
     public StatListAdapter(Context context, List<String> stats) {
         super(context, 0, stats);

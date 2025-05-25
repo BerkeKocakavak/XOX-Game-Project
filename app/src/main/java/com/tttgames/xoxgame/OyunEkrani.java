@@ -50,7 +50,7 @@ public class OyunEkrani extends AppCompatActivity {
         tvTurn = findViewById(R.id.tvTurn);
         btnReset = findViewById(R.id.btnReset);
 
-        // ImageButton Definings
+        // ImageButton definings
         buttons[0][0] = findViewById(R.id.btn00);
         buttons[0][1] = findViewById(R.id.btn01);
         buttons[0][2] = findViewById(R.id.btn02);
@@ -191,7 +191,7 @@ public class OyunEkrani extends AppCompatActivity {
         }
     }
 
-    private void computerMove() {  //AI move Selection
+    private void computerMove() {  // AI difficulty selection
         if (gameOver) return;
 
         MoveStrategy strategy;
@@ -227,7 +227,7 @@ public class OyunEkrani extends AppCompatActivity {
         }
     }
 
-    private void handleGameOver(PlayerEnum result) { //According to the game situations
+    private void handleGameOver(PlayerEnum result) { // Printing the match results
         String message;
         switch (result) {
             case XPlayer:
@@ -243,6 +243,7 @@ public class OyunEkrani extends AppCompatActivity {
                 message = "Bilinmeyen sonuç!";
         }
 
+        // Entering the match results to the database. (Only for PvP matches)
         if (gameMode == 4) {
             String winner = (result == PlayerEnum.XPlayer) ? player1Name :
                     (result == PlayerEnum.OPlayer) ? player2Name : "Draw";

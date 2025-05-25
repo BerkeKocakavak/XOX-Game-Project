@@ -24,7 +24,7 @@ class Board {
             }
         }
 
-        // column check
+        // Column check
         for (int col = 0; col < 3; ++col) {
             if (board[0][col] == board[1][col] && board[1][col] == board[2][col]) {
                 if (board[0][col] == 'X') return PlayerEnum.XPlayer;

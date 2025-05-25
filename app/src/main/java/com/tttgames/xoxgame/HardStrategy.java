@@ -1,6 +1,6 @@
 package com.tttgames.xoxgame;
 
-public class HardStrategy implements MoveStrategy { // HardMove Strategy for AI
+public class HardStrategy implements MoveStrategy { // Move strategy for the Hard AI
 
     private final char aiSymbol = 'O';
     private final char opponentSymbol = 'X';
@@ -32,7 +32,7 @@ public class HardStrategy implements MoveStrategy { // HardMove Strategy for AI
         return bestMove;
     }
 
-    private int minimax(char[][] board, int depth, boolean isMax) { //Minimax algorithm
+    private int minimax(char[][] board, int depth, boolean isMax) { //Mini-Max algorithm
         int score = evaluate(board);
 
         if (score == 10) return score - depth;
